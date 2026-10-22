@@ -2210,7 +2210,11 @@ func TestDashboardCatStyle(t *testing.T) {
 			if err := json.Unmarshal(buf.Bytes(), &m); err != nil {
 				t.Fatalf("Failed to unmarshal output: %v\nOutput was: %s", err, buf.String())
 			}
-			if m["style"] != tt.wantStyle {
+			if tt.wantStyle == nil {
+				if _, ok := m["style"]; ok {
+					t.Errorf("expected style to be absent, got %v", m["style"])
+				}
+			} else if m["style"] != tt.wantStyle {
 				t.Errorf("expected style %v, got %v", tt.wantStyle, m["style"])
 			}
 		})
